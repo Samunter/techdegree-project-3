@@ -1,0 +1,425 @@
+INTRODUCTION TO JQUERY
+
+WHAT IS JQUERY?
+
+A library that makes manipulating the DOM more easy and convenient
+
+
+
+
+
+
+JQUERY: HISTORY AND RELEVANCE TODAY
+
+Emerged by handling browser inconsistency
+
+Still exists on millions of websites, so worthwile to learn enough to build
+simple projects, use plugins, maintain an existing code base, and add
+interactivity to webpages.
+
+May never use jQuery to build complex web applications, it's still useful for
+prototyping, or for adding features to websites and smaller projects.
+
+Can offer a lot of shortcuts and prefabricated functionality
+
+
+
+
+
+
+JQUERY VS JAVASCRIPT
+
+jQuery is a javascript function that you call just like any other function.
+Essentially a collection of functions that make things a bit shorter and easier
+to code when working with the DOM.
+
+ex: JS:
+
+const box = document.querySelector('.box'); box.style.display = 'none';
+
+jQuery: $('.box').hide();
+
+
+
+
+
+
+ANIMATING ELEMENTS WITH JQUERY
+
+ex:
+
+$('#flashMessage')
+  .hide() .slideDown(1000) .delay(3000) .slideUp();
+
+//selects an html element with the id "flashMessage", hides it, makes it appear
+by sliding down from the top of the page over the course of 1 second, stays
+visible for 3 seconds, and then disappears by sliding up toward the top of the
+page
+
+example uses method chaining
+
+
+
+
+
+
+BLOG PREVIEWER: CHANGING CONTENT INSIDE ELEMENTS
+
+.text() and .html() can either get or set these properties of an element. If
+they are called with no content in the parentheses, they will return an
+element's text or html.
+
+ex:
+
+const title = "My First Blog Post"; const content = "This is my
+<strong>first</strong> post!";
+
+$('#blogTitlePreview').text(title); $('#blogContentPreview').html(content);
+
+//The text for an h2 element with the id "blogTitlePreview" is set to "My First
+Blog Post". The html for a div element with the id "blogContentPreview" is set
+to "This is my <strong>first</strong> post!". If .text() was used for the second
+element, the strong tags would show up as plain text
+
+
+
+
+
+
+BLOG PREVIEWER: GETTING VALUES FROM FORM FIELDS
+
+.val() can be used to get user input from a form
+
+ex:
+
+const title = $('#blogTitleInput').val(); const content =
+$('#blogContentInput').val();
+  
+$('#blogTitlePreview').text(title); $('#blogContentPreview').html(content);
+
+//The value is retrieved from an input element with the id "blogTitleInput" and
+from a textArea element with the id "blogContentInput". The text for an h2
+element with the id "blogTitlePreview" is set to the value from the input
+element. The html for a div element with the id "blogContentPreview" is set to
+the value from the textArea element.
+
+
+
+
+
+$('#flashMessage').hide()
+
+$('#previewButton').click(function(){
+  const title = $('#blogTitleInput').val(); const content =
+  $('#blogContentInput').val();
+  
+  $('#blogTitlePreview').text(title); $('#blogContentPreview').html(content);
+  
+  $('#flashMessage') .slideDown(1000) .delay(3000) .slideUp();
+
+});
+
+
+
+
+
+
+JQUERY EVENTS AND DOM TRAVERSAL
+
+ADDING JQUERY TO A PROJECT
+
+Can download the jquery file and include it in your project like any other file.
+Else you can use an external URL to the file hosted on another server.
+
+Link it to your html by putting it in a script tag near the bottom of the page
+
+Link js file after jquery file
+
+
+
+
+
+
+SPOILER REVEALER: BREAKING IT DOWN
+
+ex:
+
+$('.spoiler span').hide(); $('.spoiler button').click(function() {
+  $('.spoiler span').show(); $('.spoiler button').hide();
+});
+
+//hide spoiler text, located in a span tag nested in an element with the class
+"spoiler". Upon clicking a button nested in an element with the class "spoiler",
+the spoiler text will display and the button will be hidden
+
+
+
+
+
+
+UNDERSTANDING UNOBTRUSTIVE JAVASCRIPT
+
+-JS (functional layer) should be kept separate from structural (html) and
+presentational (css) layers -account for cross browser inconsistency
+-Progressive enhancement: core content and functionality should be available
+even when js is disabled
+
+
+
+
+
+
+ADDING NEW ELEMENTS TO THE DOM
+
+You can create a new element with jquery by passing valid html to the jquery
+function
+
+Adding a $ to the name of a variable created with jquery is a common convention
+
+The append method adds an element as the last item within a parent element
+
+The prepend method adds an element as the first item within a parent element
+
+ex:
+
+const $button = $('<button>Reveal Spoiler</button>');
+$('.spoiler').append($button);
+
+or
+
+$('.spoiler').prepend($button);
+
+
+
+
+
+
+USING ON() FOR EVENT HANDLING
+
+Some types of methods for event handlers: .click(), .mouseover(), .keypress(),
+.focus()
+
+The .on() method allows us to pass multiple types of events as arguments
+
+first argument is event type, second is a selector for the element we want to
+listen for the click on, last is event handler function
+
+ex:
+
+$('.spoiler button').on('click mouseleave', function() {
+  $('.spoiler span').show(); $('.spoiler button').hide();
+});
+
+//event handler runs if the button is clicked or if the mouse leaves the button
+
+
+
+
+
+
+USING EVENTS WITH DYNAMICALLY ADDED ELEMENTS
+
+Event delegation: attach an event listener to a parent element that fires when
+an event occurs on a child element
+
+Event propagation: when an event moves through the DOM from child to a parent
+element. The event propagates, or moves through the DOM. The event from the
+child gets passed to the parent
+
+With these concepts, we can attach a listener to the parent element (which
+already exists), and then pass the child element as the second argument to the
+.on() method
+
+ex:
+
+$('.spoiler').on('click', 'button', function(){
+  $('.spoiler span').show(); $('.spoiler button').hide();
+});
+
+//event listener is attached to p element with class "spoiler", then when it's
+child button is clicked, the event handler runs
+
+
+
+
+
+
+THE EVENT OBJECT
+
+Contains useful information about the event
+
+ex:
+
+$('.spoiler').on('click', 'button', function(e){
+  $(e.target).hide();
+});
+
+//when button is clicked, the element that triggered the event is hidden
+
+
+
+
+
+
+WHAT IS TRAVERSAL?
+
+.eq() returns an element from a set by its index (set would be like a group of
+children)
+
+.prev() returns the previous sibling element
+
+.next() returns the next sibling element
+
+.parent() returns parent element
+
+ex:
+
+$('li').eq(-2).hide();
+
+//selects all li items, returns the second to last li, hides it
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+WORKING WITH JQUERY COLLECTIONS
+
+JQUERY-SPECIFIC SELECTORS
+
+examples - :radio, :checkbox, :password, :odd, :even, :visible, :hidden, "starts
+with", "ends with"
+https://api.jquery.com/category/selectors/jquery-selector-extensions/
+
+odd example:
+
+const $odd = $('a:odd');
+
+starts with example:
+
+const $secureLinks = $('a[href^="https://"]');
+
+ends with example: 
+
+const $pdfs = $('a[href$=".pdf"]');
+
+
+
+
+
+
+CHANGING ELEMENT PROPERTIES
+
+.attr() first argument is the attribute you want to get or change, and the
+second argument sets the value of that attribute.
+
+ex:
+
+$secureLinks.attr('target', '_blank'); //sets target attribute to '_blank'
+
+$pdfs.attr('download', true); //sets download attribute to true. You could pass
+anything as the second argument, as the attribute just needs to be present to
+trigger the desired behavior
+
+
+
+
+
+
+CHANGING ELEMENT STYLES AND CLASSES
+
+.css() first parameter is the CSS rule you want to get or change, second
+parameter sets the value of that attribute
+
+.addClass() adds the class that you pass as an argument
+
+.removeClass() removes the class that you pass as an argument
+
+.toggleClass() toggles between adding and removing the class you pass as an
+argument
+
+
+class names are passes using camel case ('backgroundColor') not kabob case
+('background-color')
+
+ex:
+
+const $secureLinks = $('a[href^="https://"]'); $secureLinks.addClass('secure');
+//adds the class 'secure'  to links that start with https
+
+const $odd = $('a:odd'); $odd.css('backgroundColor, 'lightgrey'); //changes
+background color of odd links to light grey
+
+
+
+
+
+
+STOPPING THE BROWSER'S DEFAULT BEHAVIOR
+
+event.preventDefault()
+
+main use is to prevent the browser from submitting a form to a server and
+reloading the page on submit
+
+other use is to stop browser from automatically following a link after the user
+clicks on it
+
+$(':checked')
+
+pseudo selector returns a jQuery collection of all the elements that are checked
+
+ex:
+
+$pdfs.on('click', function(event){//when a link that ends in .pdf is clicked
+  if ($(':checked').length === 0) {//if there are no checkboxes checked on the
+  page
+    event.preventDefault(); //prevent browser from following link alert('Please
+    check the box to allow PDF downloads.'); //display alert
+  }
+});
+
+
+
+
+
+
+LOOPING THROUGH A JQUERY COLLECTION
+
+$collection.each(function(index, element) {
+  //do something with each element
+});
+
+ex:
+
+$('a').each(function(index, link){//for each link on the page
+  const url = $(link).attr('href'); //href attribute
+  $(link).parent().append(`(${url})`); //attach url to parent list item
+});
+
+
+
+
+
+
+CONCLUSION
+
+Using a CDN to load common JavaScript libraries will result in faster loading
+webpages
+
+code.jquery.com
+
+minified version
+
+copy and attach to html
+
+loads jquery from an external host
