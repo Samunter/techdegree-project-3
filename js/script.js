@@ -13,3 +13,11 @@ $('#title').on('change', function(e) {
     $otherTitleText.hide();
   }
 });
+
+//create color option for when no theme is selected
+const $noThemeColor = $(
+  '<option value="select-theme">Please select a T-shirt theme</option>'
+);
+$('#color').append($noThemeColor);
+$('#color option').hide();
+$noThemeColor.attr('selected', true);
