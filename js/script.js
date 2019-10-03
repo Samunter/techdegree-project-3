@@ -51,3 +51,30 @@ $('#design').change(function(e) {
     $dimGrey.show();
   }
 });
+
+const $activities = $('.activities input');
+//upon checking/unchecking a checkbox,
+//activities with conflicting times are disabled/enabled
+$('.activities').change(function(e) {
+  const $clickedActivity = $(e.target);
+  const $clickedActivityTime = $(e.target).attr('data-day-and-time');
+  for (let i = 0; i < $activities.length; i++) {
+    const $thisActivity = $activities.eq(i);
+    const $thisActivityTime = $thisActivity.attr('data-day-and-time');
+    if (
+      //if the current iterated activity and the clicked activity
+      //are at the same time && the current iterated activity is
+      //not the clicked activity itself
+      $thisActivityTime === $clickedActivityTime &&
+      $thisActivity.attr('name') !== $clickedActivity.attr('name')
+    ) {
+      if ($clickedActivity.prop('checked')) {
+        $thisActivity.attr('disabled', true);
+        $thisActivity.parent().css('text-decoration', 'line-through');
+      } else {
+        $thisActivity.attr('disabled', false);
+        $thisActivity.parent().css('text-decoration', 'initial');
+      }
+    }
+  }
+});
