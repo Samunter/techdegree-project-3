@@ -26,7 +26,21 @@ const $totalDisplay = $('<div></div>');
 $totalDisplay.html('Total: $' + totalCost);
 $('.activities').append($totalDisplay);
 
-//show text field when "other" is selected as job role
+// We want to automatically show the credit card payment fields
+// by default, but hide the others for good user experience.
+const $credit = $('#credit-card');
+const $paypal = $('#paypal');
+const $bitcoin = $('#bitcoin');
+$credit.show();
+$paypal.hide();
+$bitcoin.hide();
+
+/********************************************************
+ Job Role
+ ********************************************************/
+
+// When "other" is selected as a job role, we display an
+// input field so the user can describe that job
 $('#title').on('change', function(e) {
   if (e.target.value === 'other') {
     $otherTitleText.show();
@@ -35,7 +49,11 @@ $('#title').on('change', function(e) {
   }
 });
 
-//only display valid color options for selected theme
+/********************************************************
+ T-Shirt Info
+ ********************************************************/
+
+// only display valid color options for selected theme
 $('#design').change(function(e) {
   const $cornflowerBlue = $('option[value="cornflowerblue"]');
   const $darkSlateGrey = $('option[value="darkslategrey"]');
@@ -64,6 +82,10 @@ $('#design').change(function(e) {
     $dimGrey.show();
   }
 });
+
+/********************************************************
+ Register for Activities
+ ********************************************************/
 
 //upon checking/unchecking a checkbox,
 //activities with conflicting times are disabled/enabled
@@ -102,6 +124,7 @@ function checkedActivities(allElements) {
   return checked;
 }
 
+// Adds the cost of all selected activities to totalCost
 function tallyCost(checkedActivities) {
   for (let i = 0; i < checkedActivities.length; i++) {
     const dataCost = checkedActivities[i].dataset.cost;
@@ -115,4 +138,26 @@ $('.activities').change(function() {
   totalCost = 0;
   const checked = checkedActivities($activities);
   tallyCost(checked);
+});
+
+/********************************************************
+ Payment Info
+ ********************************************************/
+
+$('#payment').change(function(e) {
+  const $selectOption = $('option[value="select method"]');
+  $selectOption.hide();
+  if (e.target.value === 'Credit Card') {
+    $credit.show();
+    $paypal.hide();
+    $bitcoin.hide();
+  } else if (e.target.value === 'PayPal') {
+    $paypal.show();
+    $credit.hide();
+    $bitcoin.hide();
+  } else if (e.target.value === 'Bitcoin') {
+    $bitcoin.show();
+    $credit.hide();
+    $paypal.hide();
+  }
 });
