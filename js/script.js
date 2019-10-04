@@ -1,9 +1,30 @@
-//set focus on the first text field
+// Ensure the first text field in the app is automatically
+// focused for good user experience.
 $('#name').focus();
 
-//hide text field for "other" job title
+// If the user selects "Other" for their job, we have
+// an input field for them to describe that job, but want to
+// hide it otherwise.
 const $otherTitleText = $('#other-title');
 $otherTitleText.hide();
+
+// When user has not selected a t-shirt theme, no color options
+// are displayed. Instead we show a message prompting them to
+// select a theme.
+const $noThemeColor = $(
+  '<option value="select-theme">Please select a T-shirt theme</option>'
+);
+$('#color option').hide();
+$('#color').prepend($noThemeColor);
+$noThemeColor.attr('selected', true);
+
+const $activities = $('.activities input');
+
+// Create area to display total cost of all selected activities.
+let totalCost = 0;
+const $totalDisplay = $('<div></div>');
+$totalDisplay.html('Total: $' + totalCost);
+$('.activities').append($totalDisplay);
 
 //show text field when "other" is selected as job role
 $('#title').on('change', function(e) {
@@ -13,14 +34,6 @@ $('#title').on('change', function(e) {
     $otherTitleText.hide();
   }
 });
-
-//create color option for when no theme is selected
-const $noThemeColor = $(
-  '<option value="select-theme">Please select a T-shirt theme</option>'
-);
-$('#color option').hide();
-$('#color').prepend($noThemeColor);
-$noThemeColor.attr('selected', true);
 
 //only display valid color options for selected theme
 $('#design').change(function(e) {
@@ -52,7 +65,6 @@ $('#design').change(function(e) {
   }
 });
 
-const $activities = $('.activities input');
 //upon checking/unchecking a checkbox,
 //activities with conflicting times are disabled/enabled
 $('.activities').change(function(e) {
@@ -62,10 +74,9 @@ $('.activities').change(function(e) {
     const $thisActivity = $activities.eq(i);
     const $thisActivityTime = $thisActivity.attr('data-day-and-time');
     if (
-      //if the current iterated activity and the clicked activity
-      //are at the same time && the current iterated activity is
-      //not the clicked activity itself
+      //current iterated activity and clicked activity's times conflict
       $thisActivityTime === $clickedActivityTime &&
+      //current iterated activity is not the clicked activity itself
       $thisActivity.attr('name') !== $clickedActivity.attr('name')
     ) {
       if ($clickedActivity.prop('checked')) {
@@ -77,4 +88,31 @@ $('.activities').change(function(e) {
       }
     }
   }
+});
+
+// Takes a collection and returns all elements that are checked.
+function checkedActivities(allElements) {
+  const checked = [];
+  for (let i = 0; i < allElements.length; i++) {
+    const element = allElements[i];
+    if (element.checked) {
+      checked.push(element);
+    }
+  }
+  return checked;
+}
+
+function tallyCost(checkedActivities) {
+  for (let i = 0; i < checkedActivities.length; i++) {
+    const dataCost = checkedActivities[i].dataset.cost;
+    const cost = parseInt(dataCost.slice(1));
+    totalCost += cost;
+  }
+  $totalDisplay.html('Total: $' + totalCost);
+}
+
+$('.activities').change(function() {
+  totalCost = 0;
+  const checked = checkedActivities($activities);
+  tallyCost(checked);
 });
