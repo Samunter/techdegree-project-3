@@ -161,3 +161,50 @@ $('#payment').change(function(e) {
     $paypal.hide();
   }
 });
+
+/********************************************************
+ Payment Info
+ ********************************************************/
+
+//create validation functions for each field
+//name field can't be blank
+
+$('#name').keyup(function() {
+  nameValidation();
+});
+
+function nameValidation() {
+  const name = $('#name').val();
+  console.log(name);
+  const nameRegex = /^\w[\s\w-]*$/;
+  console.log('regex test', nameRegex.test(name));
+  const isNameValid = nameRegex.test(name);
+  if (isNameValid) {
+    showFieldAsValid('#name');
+  } else {
+    showFieldAsInvalid('#name');
+  }
+  return isNameValid;
+}
+
+//email must be validly formatted
+//must check at least one checkbox in activities
+//if credit card
+//card # must be 13-16 digits
+//zip code must be 5 digits
+//cvv must be 3 digits
+//if valid return true
+//if invalid return false and visually indicate error
+function showFieldAsInvalid(selectorString) {
+  $(selectorString).css('border', '2px solid red');
+}
+function showFieldAsValid(selectorString) {
+  $(selectorString).css('border', '2px solid #6F9DDC');
+}
+function showActivitiesAsInvalid() {
+  $('.activities').css('color', 'red');
+}
+function showActivitiesAsInvalid() {
+  $('.activities').css('color', 'initial');
+}
+//create submit event listener and call all functions
