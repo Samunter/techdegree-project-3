@@ -1,3 +1,8 @@
+const fieldValidity = {
+  name: null,
+  email: null
+};
+
 // Ensure the first text field in the app is automatically
 // focused for good user experience.
 $('#name').focus();
@@ -171,23 +176,56 @@ $('#payment').change(function(e) {
 
 $('#name').keyup(function() {
   nameValidation();
+  if (fieldValidity.name) {
+    showFieldAsValid('#name');
+  }
+});
+
+$('#name').on('blur', function() {
+  if (fieldValidity.name) {
+    showFieldAsValid('#name');
+  } else {
+    showFieldAsInvalid('#name');
+  }
 });
 
 function nameValidation() {
   const name = $('#name').val();
   console.log(name);
   const nameRegex = /^\w[\s\w-]*$/;
-  console.log('regex test', nameRegex.test(name));
+  console.log('name regex test', nameRegex.test(name));
   const isNameValid = nameRegex.test(name);
-  if (isNameValid) {
-    showFieldAsValid('#name');
-  } else {
-    showFieldAsInvalid('#name');
-  }
+  fieldValidity.name = isNameValid;
   return isNameValid;
 }
 
 //email must be validly formatted
+
+$('#mail').keyup(function() {
+  emailValidation();
+  if (fieldValidity.email) {
+    showFieldAsValid('#mail');
+  }
+});
+
+$('#mail').on('blur', function() {
+  if (fieldValidity.email) {
+    showFieldAsValid('#mail');
+  } else {
+    showFieldAsInvalid('#mail');
+  }
+});
+
+function emailValidation() {
+  const email = $('#mail').val();
+  console.log(email);
+  const emailRegex = /^[^@]+@[^@.]+\.[a-z]+$/;
+  console.log('email regex test', emailRegex.test(email));
+  const isEmailValid = emailRegex.test(email);
+  fieldValidity.email = isEmailValid;
+  return isEmailValid;
+}
+
 //must check at least one checkbox in activities
 //if credit card
 //card # must be 13-16 digits
