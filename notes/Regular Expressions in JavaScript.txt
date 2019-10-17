@@ -2,8 +2,9 @@ REGULAR EXPRESSIONS
 
 WHAT IS A REGULAR EXPRESSION
 
-A way to describe a pattern in a string Used to compare, find matches A string
-is a kind of regex that only matches exact duplicates
+A way to describe a pattern in a string 
+Used to compare, find matches
+A string is a kind of regex that only matches exact duplicates
 
 
 
