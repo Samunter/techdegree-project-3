@@ -374,7 +374,7 @@ function canSubmitForm() {
   let valid =
     fieldValidity.name && fieldValidity.mail && fieldValidity.activities;
 
-  if ($('#payment option').val() === 'Credit Card') {
+  if ($('#payment option:selected').val() === 'Credit Card') {
     valid =
       valid &&
       fieldValidity['cc-num'] &&
